@@ -15,6 +15,7 @@ if uploaded_file:
     # Column selection
     x_column = st.selectbox("Select Time Column (X)", df.columns)
     y_column = st.selectbox("Select Magnitude/Flux Column (Y)", df.columns)
+    yerr_column=st.selectbox("Select Magnitude/Flux error Column (Yerr)",df.columns)
 
     # Input for period in days
     period_days = st.number_input("Enter the period in days for phase folding:", min_value=0.0)
@@ -23,11 +24,12 @@ if uploaded_file:
         # Extract columns
         x = df[x_column].values
         y = df[y_column].values
+        yerr=df[yerr_column].values
         
         # Plot original lightcurve
         st.subheader("Original Lightcurve")
         plt.figure(figsize=(8, 4))
-        plt.plot(x, y, 'o', markersize=5, label="Original Lightcurve")
+        plt.errorbar(x=x, y=y,yerr=yerr, fmt='o', markersize=5, label="Original Lightcurve")
         plt.xlabel("Time",fontsize=18)
         plt.ylabel("Magnitude/Flux",fontsize=18)
         plt.gca().invert_yaxis()  # Typical for magnitude plots
