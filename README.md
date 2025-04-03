@@ -1,6 +1,6 @@
 # Data visualisation
 
-A simple Streamlit app for visualising two columns from a give csv file
+A simple Streamlit app for visualising two columns from a given csv file
 
 ### How to run it on your own machine
 
