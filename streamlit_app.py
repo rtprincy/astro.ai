@@ -24,11 +24,7 @@ if uploaded_file:
         # Extract columns
         x = df[x_column].values
         y = df[y_column].values
-        
-            yerr=df[yerr_column].values
-        else:
-            
-        
+        yerr=df[yerr_column].values
         # Plot original lightcurve
         st.subheader("Original Lightcurve")
         plt.figure(figsize=(8, 4))
