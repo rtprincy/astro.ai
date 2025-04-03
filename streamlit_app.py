@@ -54,8 +54,8 @@ if uploaded_file:
             st.subheader("Phase-Folded Lightcurve")
             plt.figure(figsize=(8, 4))
             if yerr_column is not None:
-                plt.errorbar(x=phase,y=y,yerr=yerr,markersize=5,fmt='o', label="Phase-Folded Lightcurve")
-                plt.errorbar(x=phase+1,y=y,yerr=yerr,markersize=5,fmt='o')
+                plt.errorbar(x=phase,y=y,yerr=yerr,markersize=5,fmt='o',color='k', label="Phase-Folded Lightcurve")
+                plt.errorbar(x=phase+1,y=y,yerr=yerr,markersize=5,fmt='o',color='k')
             else:
                 plt.plot(phase, y, 'ok', markersize=5, label="Phase-Folded Lightcurve")
                 plt.plot(phase+1, y, 'ok', markersize=5)
