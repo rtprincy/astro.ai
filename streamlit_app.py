@@ -24,12 +24,18 @@ if uploaded_file:
         # Extract columns
         x = df[x_column].values
         y = df[y_column].values
-        yerr=df[yerr_column].values
+        
+            yerr=df[yerr_column].values
+        else:
+            
         
         # Plot original lightcurve
         st.subheader("Original Lightcurve")
         plt.figure(figsize=(8, 4))
-        plt.errorbar(x=x, y=y,yerr=yerr, fmt='o', markersize=5, label="Original Lightcurve")
+        if yerr_column is not None:
+            plt.errorbar(x=x, y=y,yerr=yerr, fmt='o', markersize=5, label="Original Lightcurve")
+        else:
+            plt.plot(x, y, 'o', markersize=5, label="Original Lightcurve")
         plt.xlabel("Time",fontsize=18)
         plt.ylabel("Magnitude/Flux",fontsize=18)
         plt.gca().invert_yaxis()  # Typical for magnitude plots
@@ -51,7 +57,10 @@ if uploaded_file:
             # Plot phase-folded lightcurve
             st.subheader("Phase-Folded Lightcurve")
             plt.figure(figsize=(8, 4))
-            plt.plot(phase, y, 'ok', markersize=5, label="Phase-Folded Lightcurve")
+            if yerr_column is not None:
+                plt.errorbar(x=phase,y=y,yerr=yerr,markersize=5, label="Phase-Folded Lightcurve")
+            else:
+                plt.plot(phase, y, 'ok', markersize=5, label="Phase-Folded Lightcurve")
             plt.plot(phase+1, y, 'ok', markersize=5)
             plt.xlabel("Phase",fontsize=18)
             plt.ylabel("Magnitude/Flux",fontsize=18)
