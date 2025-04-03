@@ -54,10 +54,11 @@ if uploaded_file:
             st.subheader("Phase-Folded Lightcurve")
             plt.figure(figsize=(8, 4))
             if yerr_column is not None:
-                plt.errorbar(x=phase,y=y,yerr=yerr,markersize=5, label="Phase-Folded Lightcurve")
+                plt.errorbar(x=phase,y=y,yerr=yerr,markersize=5,fmt='o', label="Phase-Folded Lightcurve")
+                plt.errorbar(x=phase+1,y=y,yerr=yerr,markersize=5,fmt='o')
             else:
                 plt.plot(phase, y, 'ok', markersize=5, label="Phase-Folded Lightcurve")
-            plt.plot(phase+1, y, 'ok', markersize=5)
+                plt.plot(phase+1, y, 'ok', markersize=5)
             plt.xlabel("Phase",fontsize=18)
             plt.ylabel("Magnitude/Flux",fontsize=18)
             plt.gca().invert_yaxis()  # Typical for magnitude plots
