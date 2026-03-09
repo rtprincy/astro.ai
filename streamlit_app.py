@@ -6,9 +6,7 @@ from astropy.timeseries import LombScargle
 from lk_stat_package import lk_stat
 
 params = {
-         'mathtext.default': 'regular',
-    
-          'text.usetex': True}
+         'mathtext.default': 'regular'}
 plt.rcParams.update(params)
 
 plt.rcParams['figure.dpi']=250
