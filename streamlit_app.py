@@ -122,19 +122,45 @@ if uploaded_file:
         st.session_state.best_freq = best_freq
         st.write(f"Best period found: {best_period:.4f} days")
 
-    # after displaying the preview we always show the lightcurve plots (with filtering applied)
-    x = df[x_column].values
-    y = df[y_column].values
-    yerr = df[yerr_column].values if yerr_column != "None" else None
-    if filter_column != "None" and filter_column in df.columns:
-        filter_mask = df[filter_column].astype(str) == filter_value
-        x = x[filter_mask]
-        y = y[filter_mask]
+    # only plot if user has selected both x and y columns
+    if 'x_column' in locals() and 'y_column' in locals():
+        # after displaying the preview we always show the lightcurve plots (with filtering applied)
+        x = df[x_column].values
+        y = df[y_column].values
+        yerr = df[yerr_column].values if yerr_column != "None" else None
+    else:
+        x = y = yerr = None
+    if x is not None and y is not None:
+        if filter_column != "None" and filter_column in df.columns:
+            filter_mask = df[filter_column].astype(str) == filter_value
+            x = x[filter_mask]
+            y = y[filter_mask]
+            if yerr is not None:
+                yerr = yerr[filter_mask]
+            st.write(
+                f"Applied filter '{filter_column} == {filter_value}': using {len(x)} data points for plotting."
+            )
+
+        st.subheader("Original Lightcurve")
+        plt.figure(figsize=(8, 4))
         if yerr is not None:
-            yerr = yerr[filter_mask]
-        st.write(
-            f"Applied filter '{filter_column} == {filter_value}': using {len(x)} data points for plotting."
-        )
+            plt.errorbar(
+                x=x-min(x),  # shift time to start at zero for better visualization
+                y=y,
+                yerr=yerr,
+                fmt="o",
+                markersize=5,
+                label="Original Lightcurve",
+            )
+        else:
+            plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
+        plt.xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=18)
+        plt.ylabel("Magnitude/Flux", fontsize=18)
+        plt.gca().invert_yaxis()
+        plt.title("Original Lightcurve")
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
+        st.pyplot(plt)
 
     # plot periodogram if computed
     if 'psi_norm' in st.session_state:
@@ -162,7 +188,7 @@ if uploaded_file:
     else:
         period_days = None
 
-    if period_days and period_days > 0:
+    if period_days and period_days > 0 and x is not None and y is not None:
         phase = (x / period_days) % 1
         sorted_indices = np.argsort(phase)
         phase = phase[sorted_indices]
