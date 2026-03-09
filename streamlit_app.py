@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.timeseries import LombScargle
 from lk_stat_package import lk_stat
+import base64
+import streamlit as st
+
+with open("streamlit_page.png", "rb") as f:
+    data = base64.b64encode(f.read()).decode()
 
 # Page configuration
 st.set_page_config(
@@ -61,9 +66,9 @@ st.markdown("""
 
 # Header with title and description
 st.markdown("""
+<meta property="og:image" content="data:image/png;base64,{data}">
 <meta property="og:title" content="Time-series analysis tools for astronomy">
 <meta property="og:description" content="Time-series frequency search and visualisation">
-<meta property="og:image" content="https://raw.githubusercontent.com/rtprincy/astro.ai/blob/main/streamlit_page.png">
 <div style="text-align: center; padding: 20px;">
     <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
          style="width: 100%; max-width: 800px; border-radius: 10px; margin-bottom: 20px;" 
