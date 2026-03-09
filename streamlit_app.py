@@ -7,7 +7,7 @@ from lk_stat_package import lk_stat
 
 # Page configuration
 st.set_page_config(
-    page_title="Astro Time-Series Analyzer",
+    page_title="Astro Time-Series Analyser",
     page_icon="🌌",
     layout="wide",
     initial_sidebar_state="expanded"
