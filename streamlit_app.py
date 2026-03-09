@@ -193,5 +193,3 @@ if uploaded_file:
         plt.xticks(fontsize=18)
         plt.yticks(fontsize=18)
         st.pyplot(plt)
-    elif period_days is None:
-        st.warning("No period available. Please run frequency search first or enter a manual period.")
