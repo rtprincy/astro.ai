@@ -70,7 +70,7 @@ st.markdown("""
          style="width: 100%; max-width: 800px; border-radius: 10px; margin-bottom: 20px;" 
          alt="Time-Series Analysis">
     <h1 style="color: #4CAF50;">🌌 Time-Series Analysis Tools</h1>
-    <p style="font-size: 18px; color:  #ffffff;">
+    <p style="font-size: 18px; color:  black;">
         Analyse time-series data with advanced periodogram techniques.
         Upload your CSV data and discover periodic signals in your observations.
     </p>
