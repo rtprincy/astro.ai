@@ -66,7 +66,7 @@ st.markdown("""
     <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
          style="width: 100%; max-width: 800px; border-radius: 10px; margin-bottom: 20px;" 
          alt="Astronomical Time-Series Analysis">
-    <h1 style="color: #4CAF50;">🌌 Astro Time-Series Analysis Tools</h1>
+    <h1 style="color: #4CAF50;">🌌 Time-Series Analysis Tools</h1>
     <p style="font-size: 18px; color: #e8f5e8;">
         Analyse time-series data with advanced periodogram techniques.
         Upload your CSV data and discover periodic signals in your observations.
@@ -77,9 +77,8 @@ st.markdown("""
 # Configure matplotlib for publication-quality plots
 plt.style.use('seaborn-v0_8-paper')  # Light theme suitable for publications
 plt.rcParams['figure.dpi']=300  # Higher DPI for print quality
-plt.rcParams['font.family'] = 'serif'  # Serif font for academic look
 plt.rcParams['font.size'] = 12
-plt.rcParams['axes.labelsize'] = 14
+plt.rcParams['axes.labelsize'] = 20
 plt.rcParams['axes.titlesize'] = 16
 plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
@@ -90,8 +89,6 @@ plt.rcParams['axes.grid'] = True
 plt.rcParams['grid.alpha'] = 0.3
 plt.rcParams['grid.color'] = 'gray'
 plt.rcParams['grid.linestyle'] = '--'
-
-st.title("Time-series analysis")
 
 def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
     times=np.sort(times)
@@ -215,13 +212,11 @@ if uploaded_file:
                 yerr=yerr,
                 fmt="o",
                 markersize=3,
-                color='cyan',
-                ecolor='lightblue',
                 capsize=2,
                 label="Data points"
             )
         else:
-            ax.plot(x, y, "o", markersize=3, color='cyan', label="Data points")
+            ax.plot(x, y, "o", markersize=3, label="Data points")
         ax.set_xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=14)
         ax.set_ylabel("Magnitude/Flux", fontsize=14)
         ax.invert_yaxis()
@@ -232,7 +227,7 @@ if uploaded_file:
 
         st.markdown("### 📊 Hybrid Psi Periodogram")
         fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='orange', linewidth=2)
+        ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='black', linewidth=2)
         ax.set_xlabel("Frequency (cycles/day)", fontsize=14)
         ax.set_ylabel("Normalized Psi", fontsize=14)
         ax.axvline(
@@ -301,14 +296,12 @@ if uploaded_file:
                 yerr=yerr_best,
                 markersize=3,
                 fmt="o",
-                color="lime",
-                ecolor='lightgreen',
                 capsize=2,
             )
-            ax.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=3, fmt="o", color="lime", ecolor='lightgreen', capsize=2)
+            ax.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=3, fmt="o", capsize=2)
         else:
-            ax.plot(phase, y_best, "o", markersize=3, color="lime")
-            ax.plot(phase + 1, y_best, "o", markersize=3, color="lime")
+            ax.plot(phase, y_best, "o", markersize=3)
+            ax.plot(phase + 1, y_best, "o", markersize=3)
         ax.set_xlabel("Phase", fontsize=14)
         ax.set_ylabel("Magnitude/Flux", fontsize=14)
         ax.invert_yaxis()
@@ -332,14 +325,12 @@ if uploaded_file:
                 yerr=yerr_man,
                 markersize=3,
                 fmt="o",
-                color="magenta",
-                ecolor='violet',
                 capsize=2,
             )
-            ax.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=3, fmt="o", color="magenta", ecolor='violet', capsize=2)
+            ax.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=3, fmt="o", capsize=2)
         else:
-            ax.plot(phase, y_man, "o", markersize=3, color="magenta")
-            ax.plot(phase + 1, y_man, "o", markersize=3, color="magenta")
+            ax.plot(phase, y_man, "o", markersize=3)
+            ax.plot(phase + 1, y_man, "o", markersize=3)
         ax.set_xlabel("Phase", fontsize=14)
         ax.set_ylabel("Magnitude/Flux", fontsize=14)
         ax.invert_yaxis()
