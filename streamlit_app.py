@@ -57,15 +57,14 @@ with st.sidebar:
             st.error("Please enter valid numeric values for all inputs.")
             compute_disabled = True
 
+        compute_button = st.button("Compute Periodogram and Find Best Period", disabled=compute_disabled)
+        # Note: plotting happens automatically below the dataframe preview; no separate button needed
         manual_period = st.number_input(
-            "Enter period in days for manual phase folding (optional). Otherwise, the best period will be used once computed:",
+            "Enter period in days for manual phase folding (optional). Otherwise, the best period will be used:",
             min_value=0.0,
             step=0.01,
             value=0.0,
         )
-        compute_button = st.button("Compute Periodogram and Find Best Period", disabled=compute_disabled)
-        # Note: plotting happens automatically below the dataframe preview; no separate button needed
-
 # main output area
 if uploaded_file:
     st.write("**Data Preview:**")
@@ -97,7 +96,7 @@ if uploaded_file:
         st.session_state.psi_norm = psi_norm
         st.session_state.frequency = frequency
         st.session_state.best_freq = best_freq
-        st.write(f"Best period found: {best_period*24:.4f} hrs or {best_period*24*60:.4f} mins")
+        st.write(f"Best period found: {best_period:.4f} day / {best_period*24:.4f} hr / {best_period*24*60:.4f} min")
 
 
     # plot periodogram if computed
