@@ -18,11 +18,11 @@ st.markdown("""
 <style>
     .main {
         background-color: #0e1117;
-        color: #ffffff;
+        color: white;
     }
     .sidebar .sidebar-content {
         background-color: #1a1c23;
-        color: #ffffff;
+        color: white;
     }
     .stButton>button {
         background-color: #4CAF50;
