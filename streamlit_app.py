@@ -85,20 +85,10 @@ if uploaded_file:
         best_freq = frequency[best_idx]
         best_period = 1 / best_freq
         st.session_state.best_period = best_period
+        st.session_state.psi_norm = psi_norm
+        st.session_state.frequency = frequency
+        st.session_state.best_freq = best_freq
         st.write(f"Best period found: {best_period:.4f} days")
-        st.subheader("Hybrid Psi Periodogram")
-        fig, ax = plt.subplots(figsize=(8, 4))
-        ax.plot(frequency, psi_norm)
-        ax.set_xlabel("Frequency")
-        ax.set_ylabel("Normalized Psi")
-        ax.axvline(
-            best_freq,
-            color="r",
-            linestyle="--",
-            label=f"Best Frequency: {best_freq:.4f} c/d",
-        )
-        ax.legend()
-        st.pyplot(fig)
 
     # after displaying the preview we always show the lightcurve plots (with filtering applied)
     x = df[x_column].values
@@ -117,7 +107,7 @@ if uploaded_file:
     plt.figure(figsize=(8, 4))
     if yerr is not None:
         plt.errorbar(
-            x=x,
+            x=x-min(x),  # shift time to start at zero for better visualization
             y=y,
             yerr=yerr,
             fmt="o",
@@ -126,13 +116,29 @@ if uploaded_file:
         )
     else:
         plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
-    plt.xlabel("Time", fontsize=18)
+    plt.xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=18)
     plt.ylabel("Magnitude/Flux", fontsize=18)
     plt.gca().invert_yaxis()
     plt.title("Original Lightcurve")
     plt.xticks(fontsize=18)
     plt.yticks(fontsize=18)
     st.pyplot(plt)
+
+    # plot periodogram if computed
+    if 'psi_norm' in st.session_state:
+        st.subheader("Hybrid Psi Periodogram")
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.plot(st.session_state.frequency, st.session_state.psi_norm)
+        ax.set_xlabel("Frequency")
+        ax.set_ylabel("Normalized Psi")
+        ax.axvline(
+            st.session_state.best_freq,
+            color="r",
+            linestyle="--",
+            label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d",
+        )
+        ax.legend()
+        st.pyplot(fig)
 
     # phase-folding uses manual period if provided, otherwise uses stored best period
     if manual_period > 0:
