@@ -5,88 +5,18 @@ import numpy as np
 from astropy.timeseries import LombScargle
 from lk_stat_package import lk_stat
 
-# Page configuration
-st.set_page_config(
-    page_title="Astro Time-Series Analyzer",
-    page_icon="🌌",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
-# Custom CSS for dark theme and styling
-st.markdown("""
-<style>
-    .main {
-        background-color: #0e1117;
-        color: white;
-    }
-    .sidebar .sidebar-content {
-        background-color: #1a1c23;
-        color: white;
-    }
-    .stButton>button {
-        background-color: #4CAF50;
-        color: white;
-        border-radius: 8px;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-    }
-    .stButton>button:hover {
-        background-color: #45a049;
-    }
-    .stTextInput>div>div>input {
-        background-color: #2d3748;
-        color: #ffffff;
-        border-radius: 5px;
-    }
-    .stSelectbox>div>div>select {
-        background-color: #2d3748;
-        color: #ffffff;
-        border-radius: 5px;
-    }
-    .stHeader {
-        color: #4CAF50;
-    }
-    .stSubheader {
-        color: #81c784;
-    }
-    .stWrite {
-        color: #e8f5e8;
-    }
-    .css-1d391kg {
-        background-color: #0e1117;
-    }
-</style>
-""", unsafe_allow_html=True)
 
-# Header with title and description
-st.markdown("""
-<div style="text-align: center; padding: 20px;">
-    <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-         style="width: 80%; max-width: 800px; border-radius: 10px; margin-bottom: 20px;" 
-         alt="Astronomical Time-Series Analysis">
-    <h1 style="color: #4CAF50;">🌌 Time-Series Analysis Tools</h1>
-    <p style="font-size: 18px; color: #e8f5e8;">
-        Analyse time-series data with advanced periodogram techniques.
-        Upload your CSV data and discover periodic signals in your observations.
-    </p>
-</div>
-""", unsafe_allow_html=True)
 
-# Configure matplotlib for publication-quality plots
-plt.rcParams['figure.dpi']=300  # Higher DPI for print quality
-plt.rcParams['font.size'] = 12
-plt.rcParams['axes.labelsize'] = 20
-plt.rcParams['axes.titlesize'] = 16
-plt.rcParams['xtick.labelsize'] = 12
-plt.rcParams['ytick.labelsize'] = 12
-plt.rcParams['legend.fontsize'] = 12
-plt.rcParams['lines.linewidth'] = 2
-plt.rcParams['lines.markersize'] = 4
-plt.rcParams['axes.grid'] = True
-plt.rcParams['grid.alpha'] = 0.3
-plt.rcParams['grid.linestyle'] = '--'
+plt.rcParams['figure.dpi']=300
+plt.rcParams['lines.color']='k'
+plt.rcParams['axes.edgecolor']='k'
+plt.rcParams['xtick.minor.visible']=False
+plt.rcParams['ytick.minor.visible']=False
+plt.rcParams['axes.labelsize']=22
+plt.rcParams['xtick.labelsize']=20
+plt.rcParams['ytick.labelsize']=20
+
 
 def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
     times=np.sort(times)
@@ -99,58 +29,45 @@ def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
 
 # use sidebar for controls; outputs on main area
 uploaded_file = None
-df = None
 
+df = None
 with st.sidebar:
-    st.markdown("### 📊 Input Parameters")
-    st.markdown("Upload your astronomical time-series data and configure analysis settings.")
-    uploaded_file = st.file_uploader("📁 Upload CSV file", type="csv", help="Select a CSV file containing your time-series data.")
+    st.header("Input Parameters")
+    uploaded_file = st.file_uploader("Upload the time-series data (only csv file is supported)", type="csv")
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
-        x_column = st.selectbox("⏰ Select Time Column (X)", df.columns, help="Choose the column containing time data.")
-        y_column = st.selectbox("📊 Select Magnitude/Flux Column (Y)", df.columns, help="Choose the column containing magnitude or flux data.")
+        x_column = st.selectbox("Select Time Column (X)", df.columns)
+        y_column = st.selectbox("Select Magnitude/Flux Column (Y)", df.columns)
         error_options = ["None"] + list(df.columns)
-        yerr_column = st.selectbox("📏 Select Error Column (Yerr)", error_options, help="Optional: Choose the column containing error data.")
+        yerr_column = st.selectbox("Select Magnitude/Flux error Column (Yerr)", error_options)
         filter_options = ["None"] + list(df.columns)
-        filter_column = st.selectbox("🔍 Select Filter Column (optional)", filter_options, help="Optional: Choose a column to filter data by.")
-        filter_value = st.text_input("Filter Value (e.g., 'q')", value="q", help="Enter the value to filter by.") if filter_column != "None" else None
-        col1, col2 = st.columns(2)
-        with col1:
-            f0 = st.text_input("📈 Minimum Frequency (c/d)", value="0", help="Minimum frequency in cycles per day.")
-            fn = st.text_input("📉 Maximum Frequency (c/d)", value="50", help="Maximum frequency in cycles per day.")
-        with col2:
-            oversampling_factor = st.text_input("🔄 Oversampling Factor (≤20)", value="5", help="Factor for frequency grid resolution.")
+        filter_column = st.selectbox("Select Filter Column (optional)", filter_options)
+        filter_value = st.text_input("Filter Value (e.g., 'q')", value="q") if filter_column != "None" else None
+        f0 = st.text_input("Minimum Frequency", value="0")
+        fn = st.text_input("Maximum Frequency", value="50")
+        oversampling_factor = st.text_input("Oversampling Factor (<= 20)", value="5")
         try:
             fn = float(fn)
             f0 = float(f0)
             oversampling_factor = int(oversampling_factor)
             if oversampling_factor > 20:
-                st.error("❌ Oversampling factor must be ≤ 20.")
+                st.error("Oversampling factor must be less than or equal to 20.")
                 compute_disabled = True
             else:
                 compute_disabled = False
         except ValueError:
-            st.error("❌ Please enter valid numeric values for frequency and oversampling.")
+            st.error("Please enter valid numeric values for all inputs.")
             compute_disabled = True
 
-        compute_button = st.button("🚀 Compute Periodogram and Find Best Period", disabled=compute_disabled)
-        st.markdown("---")
-        manual_input = st.text_input("🔧 Manual period in days (optional)", help="Enter a custom period for phase folding analysis.")
-        manual_button = st.button("✅ Apply Manual Period")
+        compute_button = st.button("Compute Periodogram and Find Best Period", disabled=compute_disabled)
+        manual_input = st.text_input("Manual period in days for phase folding (optional)")
+        manual_button = st.button("Apply Manual Period")
         # Note: plotting happens automatically below the dataframe preview; manual period is applied when OK is clicked
 
 # main output area
 if uploaded_file:
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown("### 📋 Data Preview")
-        st.dataframe(df.head(), use_container_width=True)
-    with col2:
-        st.markdown("### 📈 Data Summary")
-        st.write(f"**Rows:** {len(df)}")
-        st.write(f"**Columns:** {len(df.columns)}")
-        st.write(f"**Selected X:** {x_column}")
-        st.write(f"**Selected Y:** {y_column}")
+    st.write("**Data Preview:**")
+    st.write(df.head())
 
     if compute_button:
         x = df[x_column].values
@@ -162,7 +79,7 @@ if uploaded_file:
             y = y[filter_mask]
             if yerr is not None:
                 yerr = yerr[filter_mask]
-            st.info(f"ℹ️ Applied filter '{filter_column} = {filter_value}': using {len(x)} data points.")
+            st.write(f"Applied filter '{filter_column} = {filter_value}': using {len(x)} data points.")
         ls = LombScargle(x, y, dy=yerr, normalization="psd")
         frequency = freq_grid(x, oversampling_factor=oversampling_factor, f0=f0, fn=fn)
         period = 1 / frequency
@@ -181,7 +98,7 @@ if uploaded_file:
         st.session_state.psi_norm = psi_norm
         st.session_state.frequency = frequency
         st.session_state.best_freq = best_freq
-        st.success(f"✅ Best period found: {best_period:.4f} days ({best_period*24:.2f} hours / {best_period*24*60:.1f} minutes)")
+        st.write(f"Best period found: {best_period:.4f} day / {best_period*24:.4f} hr / {best_period*24*60:.4f} min")
 
     # handle manual period submission
     if manual_button:
@@ -189,11 +106,10 @@ if uploaded_file:
             val = float(manual_input)
             if val > 0:
                 st.session_state.manual_period = val
-                st.success(f"✅ Manual period set to {val:.4f} days")
             else:
-                st.warning("⚠️ Please enter a positive number for manual period.")
+                st.warning("Please enter a positive number for manual period.")
         except ValueError:
-            st.error("❌ Manual period must be a valid number.")
+            st.error("Manual period must be a valid number.")
 
 
     # plot periodogram if computed
@@ -201,43 +117,39 @@ if uploaded_file:
         x = st.session_state.x
         y = st.session_state.y
         yerr = st.session_state.yerr
-        st.markdown("### 🌟 Original Light Curve")
-        fig, ax = plt.subplots(figsize=(10, 6))
+        st.subheader("Original light curve")
+        plt.figure(figsize=(8, 4))
         if yerr is not None:
-            ax.errorbar(
+            plt.errorbar(
                 x=x-min(x),  # shift time to start at zero for better visualization
                 y=y,
                 yerr=yerr,
                 fmt="o",
-                markersize=3,
-                capsize=2,
-                label="Data points"
+                markersize=5,
+                label="Original light curve",
             )
         else:
-            ax.plot(x, y, "o", markersize=3, label="Data points")
-        ax.set_xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=14)
-        ax.set_ylabel("Magnitude/Flux", fontsize=14)
-        ax.invert_yaxis()
-        ax.set_title("Original Light Curve", fontsize=16, color='white')
-        ax.legend()
-        ax.grid(True, alpha=0.3)
-        st.pyplot(fig)
+            plt.plot(x, y, "o", markersize=5, label="Original light curve")
+        plt.xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=18)
+        plt.ylabel("Magnitude/Flux", fontsize=18)
+        plt.gca().invert_yaxis()
+        plt.title("Original light curve")
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
+        st.pyplot(plt)
 
-        st.markdown("### 📊 Hybrid Psi Periodogram")
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='black', linewidth=2)
-        ax.set_xlabel("Frequency (cycles/day)", fontsize=14)
-        ax.set_ylabel("Normalized Psi", fontsize=14)
+        st.subheader("Hybrid Psi Periodogram")
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.plot(st.session_state.frequency, st.session_state.psi_norm)
+        ax.set_xlabel("Frequency")
+        ax.set_ylabel("Normalized Psi")
         ax.axvline(
             st.session_state.best_freq,
-            color="red",
+            color="r",
             linestyle="--",
-            linewidth=2,
             label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d",
         )
-        ax.set_title("Periodogram Analysis", fontsize=16, color='white')
         ax.legend()
-        ax.grid(True, alpha=0.3)
         st.pyplot(fig)
 
     # phase-folding uses manual period if provided, otherwise uses stored best period
@@ -279,59 +191,61 @@ if uploaded_file:
 
     # now plot best & manual periods
     if period_best and x is not None and y is not None:
-        st.info(f"ℹ️ Using best period from frequency search: {period_best:.4f} days")
+        st.write(f"Using best period from frequency search: {period_best:.4f} days")
         phase = (x / period_best) % 1
         sorted_indices = np.argsort(phase)
         phase = phase[sorted_indices]
         y_best = y[sorted_indices]
         yerr_best = yerr[sorted_indices] if yerr is not None else None
-        st.markdown("### 🔍 Best Period Analysis")
-        fig, ax = plt.subplots(figsize=(10, 6))
+        st.subheader("Phase-Folded Lightcurve (Best Period)")
+        plt.figure(figsize=(8, 4))
         if yerr_best is not None:
-            ax.errorbar(
+            plt.errorbar(
                 x=phase,
                 y=y_best,
                 yerr=yerr_best,
-                markersize=3,
+                markersize=5,
                 fmt="o",
-                capsize=2,
+                color="k",
             )
-            ax.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=3, fmt="o", capsize=2)
+            plt.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=5, fmt="o", color="k")
         else:
-            ax.plot(phase, y_best, "o", markersize=3)
-            ax.plot(phase + 1, y_best, "o", markersize=3)
-        ax.set_xlabel("Phase", fontsize=14)
-        ax.set_ylabel("Magnitude/Flux", fontsize=14)
-        ax.invert_yaxis()
-        ax.set_title(f"Phase-Folded Lightcurve (Best Period: {period_best:.4f} days)", fontsize=16, color='white')
-        ax.grid(True, alpha=0.3)
-        st.pyplot(fig)
+            plt.plot(phase, y_best, "ok", markersize=5)
+            plt.plot(phase + 1, y_best, "ok", markersize=5)
+        plt.xlabel("Phase", fontsize=18)
+        plt.ylabel("Magnitude/Flux", fontsize=18)
+        plt.gca().invert_yaxis()
+        plt.title(f"Phase-Folded Lightcurve (Period = {period_best} days)")
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
+        st.pyplot(plt)
 
     if period_manual and x is not None and y is not None:
-        st.info(f"ℹ️ Using manually entered period: {period_manual:.4f} days")
+        st.write(f"Using manually entered period: {period_manual:.4f} days")
         phase = (x / period_manual) % 1
         sorted_indices = np.argsort(phase)
         phase = phase[sorted_indices]
         y_man = y[sorted_indices]
         yerr_man = yerr[sorted_indices] if yerr is not None else None
-        st.markdown("### 🎯 Manual Period Analysis")
-        fig, ax = plt.subplots(figsize=(10, 6))
+        st.subheader("Phase-Folded Lightcurve (Manual Period)")
+        plt.figure(figsize=(8, 4))
         if yerr_man is not None:
-            ax.errorbar(
+            plt.errorbar(
                 x=phase,
                 y=y_man,
                 yerr=yerr_man,
-                markersize=3,
+                markersize=5,
                 fmt="o",
-                capsize=2,
+                color="k",
             )
-            ax.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=3, fmt="o", capsize=2)
+            plt.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=5, fmt="o", color="k")
         else:
-            ax.plot(phase, y_man, "o", markersize=3)
-            ax.plot(phase + 1, y_man, "o", markersize=3)
-        ax.set_xlabel("Phase", fontsize=14)
-        ax.set_ylabel("Magnitude/Flux", fontsize=14)
-        ax.invert_yaxis()
-        ax.set_title(f"Phase-Folded Lightcurve (Manual Period: {period_manual:.4f} days)", fontsize=16, color='white')
-        ax.grid(True, alpha=0.3)
-        st.pyplot(fig)
+            plt.plot(phase, y_man, "ok", markersize=5)
+            plt.plot(phase + 1, y_man, "ok", markersize=5)
+        plt.xlabel("Phase", fontsize=18)
+        plt.ylabel("Magnitude/Flux", fontsize=18)
+        plt.gca().invert_yaxis()
+        plt.title(f"Phase-Folded Lightcurve (Period = {period_manual} days)")
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
+        st.pyplot(plt)
