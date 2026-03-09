@@ -5,10 +5,6 @@ import numpy as np
 from astropy.timeseries import LombScargle
 from lk_stat_package import lk_stat
 
-params = {
-         'mathtext.default': 'regular'}
-plt.rcParams.update(params)
-
 plt.rcParams['figure.dpi']=250
 plt.rcParams['lines.color']='k'
 plt.rcParams['axes.edgecolor']='k'
