@@ -49,13 +49,13 @@ with st.sidebar:
             compute_disabled = True
 
         manual_period = st.number_input(
-            "Enter period in days for manual phase folding (optional). Otherwise, click Plot to phase fold with the best period found:",
+            "Enter period in days for manual phase folding (optional). Otherwise, the best period will be used once computed:",
             min_value=0.0,
             step=0.01,
             value=0.0,
         )
         compute_button = st.button("Compute Periodogram and Find Best Period", disabled=compute_disabled)
-        plot_button = st.button("Plot")
+        # Note: plotting happens automatically below the dataframe preview; no separate button needed
 
 # main output area
 if uploaded_file:
@@ -100,80 +100,78 @@ if uploaded_file:
         ax.legend()
         st.pyplot(fig)
 
-    if plot_button:
-        x = df[x_column].values
-        y = df[y_column].values
-        yerr = df[yerr_column].values if yerr_column != "None" else None
-        if filter_column != "None" and filter_column in df.columns:
-            filter_mask = df[filter_column].astype(str) == filter_value
-            x = x[filter_mask]
-            y = y[filter_mask]
-            if yerr is not None:
-                yerr = yerr[filter_mask]
-            st.write(
-                f"Applied filter '{filter_column} == {filter_value}': using {len(x)} data points for plotting."
-            )
-        st.subheader("Original Lightcurve")
+    # after displaying the preview we always show the lightcurve plots (with filtering applied)
+    x = df[x_column].values
+    y = df[y_column].values
+    yerr = df[yerr_column].values if yerr_column != "None" else None
+    if filter_column != "None" and filter_column in df.columns:
+        filter_mask = df[filter_column].astype(str) == filter_value
+        x = x[filter_mask]
+        y = y[filter_mask]
+        if yerr is not None:
+            yerr = yerr[filter_mask]
+        st.write(
+            f"Applied filter '{filter_column} == {filter_value}': using {len(x)} data points for plotting."
+        )
+    st.subheader("Original Lightcurve")
+    plt.figure(figsize=(8, 4))
+    if yerr is not None:
+        plt.errorbar(
+            x=x,
+            y=y,
+            yerr=yerr,
+            fmt="o",
+            markersize=5,
+            label="Original Lightcurve",
+        )
+    else:
+        plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
+    plt.xlabel("Time", fontsize=18)
+    plt.ylabel("Magnitude/Flux", fontsize=18)
+    plt.gca().invert_yaxis()
+    plt.title("Original Lightcurve")
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    st.pyplot(plt)
+
+    # phase-folding uses manual period if provided, otherwise uses stored best period
+    if manual_period > 0:
+        period_days = manual_period
+        st.write(f"Using manually entered period: {period_days:.4f} days")
+    elif "best_period" in st.session_state:
+        period_days = st.session_state.best_period
+        st.write(f"Using best period from frequency search: {period_days:.4f} days")
+    else:
+        period_days = None
+
+    if period_days and period_days > 0:
+        phase = (x / period_days) % 1
+        sorted_indices = np.argsort(phase)
+        phase = phase[sorted_indices]
+        y = y[sorted_indices]
+        yerr = yerr[sorted_indices] if yerr is not None else None
+        st.subheader("Phase-Folded Lightcurve")
         plt.figure(figsize=(8, 4))
         if yerr is not None:
             plt.errorbar(
-                x=x,
+                x=phase,
                 y=y,
                 yerr=yerr,
-                fmt="o",
                 markersize=5,
-                label="Original Lightcurve",
+                fmt="o",
+                color="k",
+                label="Phase-Folded Lightcurve",
             )
+            plt.errorbar(x=phase + 1, y=y, yerr=yerr, markersize=5, fmt="o", color="k")
         else:
-            plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
-        plt.xlabel("Time", fontsize=18)
+            plt.plot(phase, y, "ok", markersize=5, label="Phase-Folded Lightcurve")
+            plt.plot(phase + 1, y, "ok", markersize=5)
+        plt.xlabel("Phase", fontsize=18)
         plt.ylabel("Magnitude/Flux", fontsize=18)
         plt.gca().invert_yaxis()
-        plt.title("Original Lightcurve")
+        plt.title(f"Phase-Folded Lightcurve (Period = {period_days} days)")
         plt.xticks(fontsize=18)
         plt.yticks(fontsize=18)
         st.pyplot(plt)
-
-        if manual_period > 0:
-            period_days = manual_period
-            st.write(f"Using manually entered period: {period_days:.4f} days")
-        elif "best_period" in st.session_state:
-            period_days = st.session_state.best_period
-            st.write(f"Using best period from frequency search: {period_days:.4f} days")
-        else:
-            st.warning(
-                "No period available. Please run frequency search first or enter a manual period."
-            )
-            period_days = None
-
-        if period_days and period_days > 0:
-            phase = (x / period_days) % 1
-            sorted_indices = np.argsort(phase)
-            phase = phase[sorted_indices]
-            y = y[sorted_indices]
-            yerr = yerr[sorted_indices] if yerr is not None else None
-            st.subheader("Phase-Folded Lightcurve")
-            plt.figure(figsize=(8, 4))
-            if yerr is not None:
-                plt.errorbar(
-                    x=phase,
-                    y=y,
-                    yerr=yerr,
-                    markersize=5,
-                    fmt="o",
-                    color="k",
-                    label="Phase-Folded Lightcurve",
-                )
-                plt.errorbar(x=phase + 1, y=y, yerr=yerr, markersize=5, fmt="o", color="k")
-            else:
-                plt.plot(phase, y, "ok", markersize=5, label="Phase-Folded Lightcurve")
-                plt.plot(phase + 1, y, "ok", markersize=5)
-            plt.xlabel("Phase", fontsize=18)
-            plt.ylabel("Magnitude/Flux", fontsize=18)
-            plt.gca().invert_yaxis()
-            plt.title(f"Phase-Folded Lightcurve (Period = {period_days} days)")
-            plt.xticks(fontsize=18)
-            plt.yticks(fontsize=18)
-            st.pyplot(plt)
-        else:
-            st.warning("Please enter a valid period in days to phase-fold the lightcurve.")
+    elif period_days is None:
+        st.warning("No period available. Please run frequency search first or enter a manual period.")
