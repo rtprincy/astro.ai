@@ -70,7 +70,7 @@ with st.sidebar:
 if uploaded_file:
     st.write("**Data Preview:**")
     st.write(df.head())
-    
+
     if compute_button:
         x = df[x_column].values
         y = df[y_column].values
@@ -99,25 +99,10 @@ if uploaded_file:
         st.session_state.best_freq = best_freq
         st.write(f"Best period found: {best_period:.4f} days")
 
-    # only plot if user has selected both x and y columns
-    if 'x_column' in locals() and 'y_column' in locals():
-        # after displaying the preview we always show the lightcurve plots (with filtering applied)
-        x = df[x_column].values
-        y = df[y_column].values
-        yerr = df[yerr_column].values if yerr_column != "None" else None
-    else:
-        x = y = yerr = None
-    if x is not None and y is not None:
-        if filter_column != "None" and filter_column in df.columns:
-            filter_mask = df[filter_column].astype(str) == filter_value
-            x = x[filter_mask]
-            y = y[filter_mask]
-            if yerr is not None:
-                yerr = yerr[filter_mask]
-            st.write(
-                f"Applied filter '{filter_column} == {filter_value}': using {len(x)} data points for plotting."
-            )
 
+    # plot periodogram if computed
+    if 'psi_norm' in st.session_state:
+        
         st.subheader("Original Lightcurve")
         plt.figure(figsize=(8, 4))
         if yerr is not None:
@@ -139,8 +124,6 @@ if uploaded_file:
         plt.yticks(fontsize=18)
         st.pyplot(plt)
 
-    # plot periodogram if computed
-    if 'psi_norm' in st.session_state:
         st.subheader("Hybrid Psi Periodogram")
         fig, ax = plt.subplots(figsize=(8, 4))
         ax.plot(st.session_state.frequency, st.session_state.psi_norm)
