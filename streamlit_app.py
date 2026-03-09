@@ -72,6 +72,29 @@ with st.sidebar:
 if uploaded_file:
     st.write("**Data Preview:**")
     st.write(df.head())
+    x = df[x_column].values
+    y = df[y_column].values
+    yerr = df[yerr_column].values if yerr_column != "None" and yerr_column in df.columns else None
+    st.subheader("Original Lightcurve")
+    plt.figure(figsize=(8, 4))
+    if yerr is not None:
+        plt.errorbar(
+            x=x-min(x),  # shift time to start at zero for better visualization
+            y=y,
+            yerr=yerr,
+            fmt="o",
+            markersize=5,
+            label="Original Lightcurve",
+        )
+    else:
+        plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
+    plt.xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=18)
+    plt.ylabel("Magnitude/Flux", fontsize=18)
+    plt.gca().invert_yaxis()
+    plt.title("Original Lightcurve")
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    st.pyplot(plt)
 
     if compute_button:
         x = df[x_column].values
@@ -114,26 +137,6 @@ if uploaded_file:
         st.write(
             f"Applied filter '{filter_column} == {filter_value}': using {len(x)} data points for plotting."
         )
-    st.subheader("Original Lightcurve")
-    plt.figure(figsize=(8, 4))
-    if yerr is not None:
-        plt.errorbar(
-            x=x-min(x),  # shift time to start at zero for better visualization
-            y=y,
-            yerr=yerr,
-            fmt="o",
-            markersize=5,
-            label="Original Lightcurve",
-        )
-    else:
-        plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
-    plt.xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=18)
-    plt.ylabel("Magnitude/Flux", fontsize=18)
-    plt.gca().invert_yaxis()
-    plt.title("Original Lightcurve")
-    plt.xticks(fontsize=18)
-    plt.yticks(fontsize=18)
-    st.pyplot(plt)
 
     # plot periodogram if computed
     if 'psi_norm' in st.session_state:
