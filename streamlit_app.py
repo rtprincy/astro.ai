@@ -66,9 +66,9 @@ st.markdown("""
     <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
          style="width: 100%; max-width: 800px; border-radius: 10px; margin-bottom: 20px;" 
          alt="Astronomical Time-Series Analysis">
-    <h1 style="color: #4CAF50;">🌌 Astro Time-Series Analyzer</h1>
+    <h1 style="color: #4CAF50;">🌌 Astro Time-Series Analysis Tools</h1>
     <p style="font-size: 18px; color: #e8f5e8;">
-        Analyze astronomical time-series data with advanced periodogram techniques.
+        Analyse time-series data with advanced periodogram techniques.
         Upload your CSV data and discover periodic signals in your observations.
     </p>
 </div>
