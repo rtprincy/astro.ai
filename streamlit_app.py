@@ -87,6 +87,9 @@ if uploaded_file:
         best_idx = np.argmax(psi_norm)
         best_freq = frequency[best_idx]
         best_period = 1 / best_freq
+        st.session_state.x=x
+        st.session_state.y=y
+        st.session_state.yerr=yerr
         st.session_state.best_period = best_period
         st.session_state.psi_norm = psi_norm
         st.session_state.frequency = frequency
@@ -96,7 +99,9 @@ if uploaded_file:
 
     # plot periodogram if computed
     if 'psi_norm' in st.session_state:
-        
+        x = st.session_state.x
+        y = st.session_state.y
+        yerr = st.session_state.yerr
         st.subheader("Original Lightcurve")
         plt.figure(figsize=(8, 4))
         if yerr is not None:
