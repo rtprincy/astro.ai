@@ -7,7 +7,7 @@ from lk_stat_package import lk_stat
 
 st.title("Time-series analysis")
 
-def freq_grid(times,oversample_factor=10,f0=None,fn=None):
+def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
     times=np.sort(times)
     df = 1.0 / (times.max() - times.min())
     if f0 is None:
