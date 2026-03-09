@@ -12,7 +12,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 # Custom CSS for dark theme and styling
 st.markdown("""
 <style>
@@ -62,21 +61,26 @@ st.markdown("""
 
 # Header with title and description
 st.markdown("""
+<meta property="og:title" content="Time-series analysis tools for astronomy">
+<meta property="og:description" content="Time-series frequency search and visualisation">
+<meta property="og:image" content="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+<meta property="og:type" content="website">
 <div style="text-align: center; padding: 20px;">
     <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
          style="width: 100%; max-width: 800px; border-radius: 10px; margin-bottom: 20px;" 
          alt="Time-Series Analysis">
     <h1 style="color: #4CAF50;">🌌 Time-Series Analysis Tools</h1>
-    <p style="font-size: 18px; color: #e8f5e8;">
+    <p style="font-size: 18px; color:  #4CAF50;">
         Analyse time-series data with advanced periodogram techniques.
         Upload your CSV data and discover periodic signals in your observations.
     </p>
 </div>
 """, unsafe_allow_html=True)
 
+
 # Configure matplotlib for dark theme
 plt.style.use('dark_background')
-plt.rcParams['figure.dpi']=250
+plt.rcParams['figure.dpi']=300
 plt.rcParams['lines.color']='w'
 plt.rcParams['axes.edgecolor']='w'
 plt.rcParams['xtick.color']='w'
