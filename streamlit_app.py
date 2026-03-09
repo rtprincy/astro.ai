@@ -5,6 +5,23 @@ import numpy as np
 from astropy.timeseries import LombScargle
 from lk_stat_package import lk_stat
 
+params = {
+         'mathtext.default': 'regular',
+    
+          'text.usetex': True}
+plt.rcParams.update(params)
+
+plt.rcParams['figure.dpi']=250
+plt.rcParams['lines.color']='k'
+plt.rcParams['axes.edgecolor']='k'
+# plt.rcParams['lines.linewidth']=1
+# plt.rcParams['lines.markeredgewidth']=1
+plt.rcParams['xtick.minor.visible']=False
+plt.rcParams['ytick.minor.visible']=False
+plt.rcParams['axes.labelsize']=22
+plt.rcParams['xtick.labelsize']=18
+plt.rcParams['ytick.labelsize']=18
+
 st.title("Time-series analysis")
 
 def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
