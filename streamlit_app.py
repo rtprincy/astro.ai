@@ -75,7 +75,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Configure matplotlib for publication-quality plots
-plt.style.use('seaborn-v0_8-paper')  # Light theme suitable for publications
 plt.rcParams['figure.dpi']=300  # Higher DPI for print quality
 plt.rcParams['font.size'] = 12
 plt.rcParams['axes.labelsize'] = 20
@@ -87,7 +86,6 @@ plt.rcParams['lines.linewidth'] = 2
 plt.rcParams['lines.markersize'] = 4
 plt.rcParams['axes.grid'] = True
 plt.rcParams['grid.alpha'] = 0.3
-plt.rcParams['grid.color'] = 'gray'
 plt.rcParams['grid.linestyle'] = '--'
 
 def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
