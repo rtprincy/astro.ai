@@ -134,11 +134,13 @@ if uploaded_file:
 
     # phase-folding uses manual period if provided, otherwise uses stored best period
     with st.sidebar:
-        manual_period = st.number_input(
+        if "best_period" in st.session_state:
+            default_period = st.session_state.best_period
+            manual_period = st.number_input(
                 "Enter period in days for manual phase folding (optional). Otherwise, the best period will be used:",
                 min_value=0.0,
                 step=0.01,
-                value=st.session_state.best_period,
+                value=default_period ,
             )
 
     if manual_period > 0:
