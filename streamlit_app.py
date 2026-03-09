@@ -63,7 +63,7 @@ st.markdown("""
 st.markdown("""
 <meta property="og:title" content="Time-series analysis tools for astronomy">
 <meta property="og:description" content="Time-series frequency search and visualisation">
-<meta property="og:image" content="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+<meta property="og:image" content="streamlit_page.png">
 <meta property="og:type" content="website">
 <div style="text-align: center; padding: 20px;">
     <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
