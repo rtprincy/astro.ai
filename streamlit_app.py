@@ -136,17 +136,14 @@ if uploaded_file:
     with st.sidebar:
         if "best_period" in st.session_state:
             default_period = st.session_state.best_period
-            manual_period = st.number_input(
+            period_days = st.number_input(
                 "Enter period in days for manual phase folding (optional). Otherwise, the best period will be used:",
                 min_value=0.0,
                 step=0.01,
                 value=default_period ,
             )
-
-    if manual_period > 0:
-        period_days = manual_period
-        st.write(f"Using manually entered period: {period_days:.4f} days")
-    elif "best_period" in st.session_state:
+    
+    if "best_period" in st.session_state:
         period_days = st.session_state.best_period
         st.write(f"Using best period from frequency search: {period_days:.4f} days")
     else:
