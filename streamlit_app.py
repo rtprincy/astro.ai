@@ -97,7 +97,7 @@ if uploaded_file:
         st.session_state.psi_norm = psi_norm
         st.session_state.frequency = frequency
         st.session_state.best_freq = best_freq
-        st.write(f"Best period found: {best_period:.4f} days")
+        st.write(f"Best period found: {best_period*24:.4f} hrs or {best_period*24*60:.4f} mins")
 
 
     # plot periodogram if computed
@@ -173,7 +173,7 @@ if uploaded_file:
         plt.xlabel("Phase", fontsize=18)
         plt.ylabel("Magnitude/Flux", fontsize=18)
         plt.gca().invert_yaxis()
-        plt.title(f"Phase-Folded Lightcurve (Period = {period_days} days)")
+        plt.title(f"Phase-Folded Lightcurve (Period = {period_days:.4f} days)")
         plt.xticks(fontsize=18)
         plt.yticks(fontsize=18)
         st.pyplot(plt)
