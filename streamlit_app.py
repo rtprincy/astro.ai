@@ -38,33 +38,6 @@ with st.sidebar:
         y_column = st.selectbox("Select Magnitude/Flux Column (Y)", df.columns)
         error_options = ["None"] + list(df.columns)
         yerr_column = st.selectbox("Select Magnitude/Flux error Column (Yerr)", error_options)
-
-        st.write("**Data Preview:**")
-        st.write(df.head())
-        x = df[x_column].values
-        y = df[y_column].values
-        yerr = df[yerr_column].values if yerr_column != "None" and yerr_column in df.columns else None
-        st.subheader("Original Lightcurve")
-        plt.figure(figsize=(8, 4))
-        if yerr is not None:
-            plt.errorbar(
-            x=x-min(x),  # shift time to start at zero for better visualization
-            y=y,
-            yerr=yerr,
-            fmt="o",
-            markersize=5,
-            label="Original Lightcurve",
-        )
-        else:
-            plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
-        plt.xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=18)
-        plt.ylabel("Magnitude/Flux", fontsize=18)
-        plt.gca().invert_yaxis()
-        plt.title("Original Lightcurve")
-        plt.xticks(fontsize=18)
-        plt.yticks(fontsize=18)
-        st.pyplot(plt)
-
         filter_options = ["None"] + list(df.columns)
         filter_column = st.selectbox("Select Filter Column (optional)", filter_options)
         filter_value = st.text_input("Filter Value (e.g., 'q')", value="q") if filter_column != "None" else None
@@ -90,12 +63,37 @@ with st.sidebar:
             step=0.01,
             value=0.0,
         )
-
         compute_button = st.button("Compute Periodogram and Find Best Period", disabled=compute_disabled)
         # Note: plotting happens automatically below the dataframe preview; no separate button needed
 
 # main output area
 if uploaded_file:
+    st.write("**Data Preview:**")
+    st.write(df.head())
+    x = df[x_column].values
+    y = df[y_column].values
+    yerr = df[yerr_column].values if yerr_column != "None" and yerr_column in df.columns else None
+    st.subheader("Original Lightcurve")
+    plt.figure(figsize=(8, 4))
+    if yerr is not None:
+        plt.errorbar(
+            x=x-min(x),  # shift time to start at zero for better visualization
+            y=y,
+            yerr=yerr,
+            fmt="o",
+            markersize=5,
+            label="Original Lightcurve",
+        )
+    else:
+        plt.plot(x, y, "o", markersize=5, label="Original Lightcurve")
+    plt.xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=18)
+    plt.ylabel("Magnitude/Flux", fontsize=18)
+    plt.gca().invert_yaxis()
+    plt.title("Original Lightcurve")
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    st.pyplot(plt)
+
     if compute_button:
         x = df[x_column].values
         y = df[y_column].values
