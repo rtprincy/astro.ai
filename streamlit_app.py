@@ -74,20 +74,22 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Configure matplotlib for dark theme
-plt.style.use('dark_background')
-plt.rcParams['figure.dpi']=250
-plt.rcParams['lines.color']='w'
-plt.rcParams['axes.edgecolor']='w'
-plt.rcParams['xtick.color']='w'
-plt.rcParams['ytick.color']='w'
-plt.rcParams['axes.labelcolor']='w'
-plt.rcParams['text.color']='w'
-plt.rcParams['xtick.minor.visible']=False
-plt.rcParams['ytick.minor.visible']=False
-plt.rcParams['axes.labelsize']=22
-plt.rcParams['xtick.labelsize']=20
-plt.rcParams['ytick.labelsize']=20
+# Configure matplotlib for publication-quality plots
+plt.style.use('seaborn-v0_8-paper')  # Light theme suitable for publications
+plt.rcParams['figure.dpi']=300  # Higher DPI for print quality
+plt.rcParams['font.family'] = 'serif'  # Serif font for academic look
+plt.rcParams['font.size'] = 12
+plt.rcParams['axes.labelsize'] = 14
+plt.rcParams['axes.titlesize'] = 16
+plt.rcParams['xtick.labelsize'] = 12
+plt.rcParams['ytick.labelsize'] = 12
+plt.rcParams['legend.fontsize'] = 12
+plt.rcParams['lines.linewidth'] = 2
+plt.rcParams['lines.markersize'] = 4
+plt.rcParams['axes.grid'] = True
+plt.rcParams['grid.alpha'] = 0.3
+plt.rcParams['grid.color'] = 'gray'
+plt.rcParams['grid.linestyle'] = '--'
 
 st.title("Time-series analysis")
 
