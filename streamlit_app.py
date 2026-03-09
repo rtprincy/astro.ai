@@ -58,13 +58,9 @@ with st.sidebar:
             compute_disabled = True
 
         compute_button = st.button("Compute Periodogram and Find Best Period", disabled=compute_disabled)
-        manual_period = st.number_input(
-            "Manual period in days for phase folding (optional)",
-            min_value=0.0,
-            step=0.01,
-            value=0.0,
-        )
-        # Note: plotting happens automatically below the dataframe preview; no separate button needed
+        manual_input = st.text_input("Manual period in days for phase folding (optional)")
+        manual_button = st.button("Apply Manual Period")
+        # Note: plotting happens automatically below the dataframe preview; manual period is applied when OK is clicked
 
 # main output area
 if uploaded_file:
@@ -101,6 +97,17 @@ if uploaded_file:
         st.session_state.frequency = frequency
         st.session_state.best_freq = best_freq
         st.write(f"Best period found: {best_period:.4f} day / {best_period*24:.4f} hr / {best_period*24*60:.4f} min")
+
+    # handle manual period submission
+    if manual_button:
+        try:
+            val = float(manual_input)
+            if val > 0:
+                st.session_state.manual_period = val
+            else:
+                st.warning("Please enter a positive number for manual period.")
+        except ValueError:
+            st.error("Manual period must be a valid number.")
 
 
     # plot periodogram if computed
@@ -147,7 +154,8 @@ if uploaded_file:
     
     # collect periods
     period_best = st.session_state.get("best_period", None)
-    period_manual = manual_period if 'manual_period' in locals() and manual_period > 0 else None
+    # manual period comes from session state if user clicked OK
+    period_manual = st.session_state.get('manual_period', None)
 
     if False:  # old period_days-based code disabled
         phase = (x / period_days) % 1
