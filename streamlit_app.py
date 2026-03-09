@@ -59,12 +59,7 @@ with st.sidebar:
 
         compute_button = st.button("Compute Periodogram and Find Best Period", disabled=compute_disabled)
         # Note: plotting happens automatically below the dataframe preview; no separate button needed
-        manual_period = st.number_input(
-            "Enter period in days for manual phase folding (optional). Otherwise, the best period will be used:",
-            min_value=0.0,
-            step=0.01,
-            value=0.0,
-        )
+
 # main output area
 if uploaded_file:
     st.write("**Data Preview:**")
@@ -138,6 +133,14 @@ if uploaded_file:
         st.pyplot(fig)
 
     # phase-folding uses manual period if provided, otherwise uses stored best period
+    with st.sidebar:
+        manual_period = st.number_input(
+                "Enter period in days for manual phase folding (optional). Otherwise, the best period will be used:",
+                min_value=0.0,
+                step=0.01,
+                value=st.session_state.best_period,
+            )
+
     if manual_period > 0:
         period_days = manual_period
         st.write(f"Using manually entered period: {period_days:.4f} days")
