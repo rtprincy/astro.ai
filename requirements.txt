@@ -3,4 +3,4 @@ matplotlib
 astropy
 numpy
 pandas
-lk_stat
+lk-stat-package
