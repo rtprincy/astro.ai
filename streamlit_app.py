@@ -261,7 +261,8 @@ if df is not None:
             st.session_state.best_freq,
             1,
             color="red",
-            ms=3,
+            fmt="o",
+            ms=4,
             label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d",
         )
         ax.set_title("Periodogram Analysis", fontsize=20)
