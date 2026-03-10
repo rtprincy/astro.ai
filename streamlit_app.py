@@ -121,18 +121,20 @@ with st.sidebar:
         try:
             df = pd.read_csv("demo_lc.csv")
             st.info("ℹ️ Loaded demo light curve from `demo_lc.csv`.")
-            x_column = "Time"
-            y_column = "mag"
-            yerr_column = "mag_err"
         except Exception as e:
             st.error(f"❌ Failed to load demo file: {e}")
             df = None
 
     if df is not None:
-        x_column = st.selectbox("⏰ Select Time Column (X)", df.columns, help="Choose the column containing time data.")
-        y_column = st.selectbox("📊 Select Magnitude/Flux Column (Y)", df.columns, help="Choose the column containing magnitude or flux data.")
+        # default selections: first three columns
+        x_default = 0
+        y_default = 1 if len(df.columns) > 1 else 0
+        yerr_default = 3 if len(df.columns) > 2 else 0  # index within error_options (0 -> None)
+
+        x_column = st.selectbox("⏰ Select Time Column (X)", df.columns, index=x_default, help="Choose the column containing time data.")
+        y_column = st.selectbox("📊 Select Magnitude/Flux Column (Y)", df.columns, index=y_default, help="Choose the column containing magnitude or flux data.")
         error_options = ["None"] + list(df.columns)
-        yerr_column = st.selectbox("📏 Select Error Column (Yerr)", error_options, help="Optional: Choose the column containing error data.")
+        yerr_column = st.selectbox("📏 Select Error Column (Yerr)", error_options, index=yerr_default, help="Optional: Choose the column containing error data.")
         filter_options = ["None"] + list(df.columns)
         filter_column = st.selectbox("🔍 Select Filter Column (optional)", filter_options, help="Optional: Choose a column to filter data by.")
         filter_value = st.text_input("Filter Value (e.g., 'q')", value="q", help="Enter the value to filter by.") if filter_column != "None" else None
@@ -242,7 +244,7 @@ if df is not None:
             )
         else:
             ax.plot(x, y, "o", markersize=4, color='C0', label="Data points")
-        ax.set_xlabel("Time - %.5f)"%(min(x)))
+        ax.set_xlabel("Time - %.5f"%(min(x)))
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
         ax.set_title("Original time-series", fontsize=20)
