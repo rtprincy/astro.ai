@@ -124,7 +124,7 @@ with st.sidebar:
         col1, col2 = st.columns(2)
         with col1:
             f0 = st.text_input("📈 Minimum Frequency (c/d)", value="0", help="Minimum frequency in cycles per day.")
-            fn = st.text_input("📉 Maximum Frequency (c/d)", value="50", help="Maximum frequency in cycles per day.")
+            fn = st.text_input("📉 Maximum Frequency (c/d)", value="10", help="Maximum frequency in cycles per day.")
         with col2:
             oversampling_factor = st.text_input("🔄 Oversampling Factor (≤20)", value="5", help="Factor for frequency grid resolution.")
         try:
