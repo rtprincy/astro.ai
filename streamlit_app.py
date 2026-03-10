@@ -203,7 +203,7 @@ if uploaded_file:
         x = st.session_state.x
         y = st.session_state.y
         yerr = st.session_state.yerr
-        st.markdown("### 🌟 Original Light Curve")
+        st.markdown("### 🌟 Original time-series")
         fig, ax = plt.subplots(figsize=(10, 6))
         if yerr is not None:
             ax.errorbar(
@@ -222,7 +222,7 @@ if uploaded_file:
         ax.set_xlabel("Time (MJD - %.5f)"%(min(x)))
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title("Original Light Curve", fontsize=20)
+        ax.set_title("Original time-series", fontsize=20)
         ax.legend(fontsize=20)
         # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
@@ -310,7 +310,7 @@ if uploaded_file:
         ax.set_xlabel("Phase")
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title(f"Phase-folded timeseries (Best Period: {period_best:.4f} days)", fontsize=20)
+        ax.set_title(f"Phase-folded time-series (Best Period: {period_best:.4f} days)", fontsize=20)
         # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
 
