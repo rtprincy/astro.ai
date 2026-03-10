@@ -213,7 +213,7 @@ if uploaded_file:
                 fmt="o",
                 markersize=4,
                 color='C0',
-                ecolor='lightblue',
+                ecolor='C0',
                 capsize=2,
                 label="Data points"
             )
