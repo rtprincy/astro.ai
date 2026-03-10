@@ -7,7 +7,7 @@ from lk_stat_package import lk_stat
 import base64
 import streamlit as st
 
-with open("streamlit_page.png", "rb") as f:
+with open("/workspaces/astro.ai/streamlit_page.png", "rb") as f:
     data = base64.b64encode(f.read()).decode()
 
 # Page configuration
