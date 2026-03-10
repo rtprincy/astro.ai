@@ -80,7 +80,7 @@ st.markdown("""
 
 
 # Configure matplotlib for dark theme
-plt.style.use('ggplot')
+plt.style.use('seaborn-v0_8-notebook')
 plt.rcParams['figure.dpi']=300
 plt.rcParams['xtick.minor.visible']=False
 plt.rcParams['ytick.minor.visible']=False
@@ -222,7 +222,7 @@ if uploaded_file:
         ax.set_xlabel("Time (MJD - %.5f)"%(min(x)))
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title("Original Light Curve", fontsize=20, color='white')
+        ax.set_title("Original Light Curve", fontsize=20)
         ax.legend(fontsize=20)
         # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
@@ -239,7 +239,7 @@ if uploaded_file:
             linewidth=2,
             label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d",
         )
-        ax.set_title("Periodogram Analysis", fontsize=20, color='white')
+        ax.set_title("Periodogram Analysis", fontsize=20)
         ax.legend(fontsize=20)
         # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
@@ -310,7 +310,7 @@ if uploaded_file:
         ax.set_xlabel("Phase")
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title(f"Phase-Folded Lightcurve (Best Period: {period_best:.4f} days)", fontsize=20, color='white')
+        ax.set_title(f"Phase-folded timeseries (Best Period: {period_best:.4f} days)", fontsize=20)
         # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
 
@@ -342,6 +342,6 @@ if uploaded_file:
         ax.set_xlabel("Phase")
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title(f"Phase-Folded Lightcurve (Manual Period: {period_manual:.4f} days)", fontsize=20, color='white')
+        ax.set_title(f"Phase-folded timeseries (Manual Period: {period_manual:.4f} days)", fontsize=20)
         # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
