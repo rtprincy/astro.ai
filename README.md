@@ -1,6 +1,6 @@
-# Astro.ai - Lightcurve Analysis Tool
+# Astro.ai - Time-series Analysis Tool
 
-A Streamlit app for visualizing and analyzing astronomical lightcurves, including phase folding and frequency search using the Lomb-Scargle periodogram.
+A Streamlit app for visualizing and analysing astronomical time-series, including phase folding and frequency search using the Lomb-Scargle periodogram.
 
 ## Features
 
@@ -24,3 +24,5 @@ A Streamlit app for visualizing and analyzing astronomical lightcurves, includin
    ```
    $ streamlit run streamlit_app.py
    ```
+# Show me
+![Time-series Analysis Tool](https://github.com/rtprincy/astro.ai/blob/main/streamlit_page.png)
