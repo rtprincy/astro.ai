@@ -211,14 +211,14 @@ if uploaded_file:
                 y=y,
                 yerr=yerr,
                 fmt="o",
-                markersize=3,
-                color='cyan',
+                markersize=4,
+                color='C0',
                 ecolor='lightblue',
                 capsize=2,
                 label="Data points"
             )
         else:
-            ax.plot(x, y, "o", markersize=3, color='cyan', label="Data points")
+            ax.plot(x, y, "o", markersize=4, color='C0', label="Data points")
         ax.set_xlabel("Time (MJD - %.5f)"%(min(x)))
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
