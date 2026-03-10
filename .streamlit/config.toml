@@ -1,15 +1,14 @@
 [theme]
 primaryColor="#4CAF50"
-base = "light"
 
 [server]
-headless=false
+headless=true
 
 [browser]
-gatherUsageStats=true
+gatherUsageStats=false
 
 [client]
 showSidebarNavigation=true
 
 [general]
-appTitle="Timeseries analysis tools"
+appTitle="Time-series analysis tools"
