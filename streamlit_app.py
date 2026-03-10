@@ -80,7 +80,7 @@ st.markdown("""
 
 
 # Configure matplotlib for dark theme
-plt.style.use('seaborn-v0_8-notebook')
+plt.style.use('ggplot')
 plt.rcParams['figure.dpi']=300
 plt.rcParams['xtick.minor.visible']=False
 plt.rcParams['ytick.minor.visible']=False
