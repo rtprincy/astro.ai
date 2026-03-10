@@ -102,13 +102,30 @@ def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
 # use sidebar for controls; outputs on main area
 uploaded_file = None
 df = None
+compute_button = False
+manual_button = False
 
 with st.sidebar:
     st.markdown("### 📊 Input Parameters")
     st.markdown("Upload your astronomical time-series data and configure analysis settings.")
-    uploaded_file = st.file_uploader("📁 Upload CSV file", type="csv", help="Select a CSV file containing your time-series data.")
-    if uploaded_file:
-        df = pd.read_csv(uploaded_file)
+
+    # let user choose whether to upload or use demo data
+    data_source = st.radio("📁 Data Source", ["Upload CSV file", "Use local demo light curve"], index=0)
+
+    if data_source == "Upload CSV file":
+        uploaded_file = st.file_uploader("📁 Upload CSV file", type="csv", help="Select a CSV file containing your time-series data.")
+        if uploaded_file:
+            df = pd.read_csv(uploaded_file)
+    else:
+        # load the bundled demo file
+        try:
+            df = pd.read_csv("demo_lc.csv")
+            st.info("ℹ️ Loaded demo light curve from `demo_lc.csv`.")
+        except Exception as e:
+            st.error(f"❌ Failed to load demo file: {e}")
+            df = None
+
+    if df is not None:
         x_column = st.selectbox("⏰ Select Time Column (X)", df.columns, help="Choose the column containing time data.")
         y_column = st.selectbox("📊 Select Magnitude/Flux Column (Y)", df.columns, help="Choose the column containing magnitude or flux data.")
         error_options = ["None"] + list(df.columns)
@@ -142,7 +159,10 @@ with st.sidebar:
         # Note: plotting happens automatically below the dataframe preview; manual period is applied when OK is clicked
 
 # main output area
-if uploaded_file:
+if df is not None:
+    # indicate source
+    if 'data_source' in locals() and data_source == "Use local demo light curve":
+        st.info("ℹ️ Analysis running on demo data (demo_lc.csv)")
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown("### 📋 Data Preview")
@@ -250,36 +270,6 @@ if uploaded_file:
     period_best = st.session_state.get("best_period", None)
     # manual period comes from session state if user clicked OK
     period_manual = st.session_state.get('manual_period', None)
-
-    if False:  # old period_days-based code disabled
-        phase = (x / period_days) % 1
-        sorted_indices = np.argsort(phase)
-        phase = phase[sorted_indices]
-        y = y[sorted_indices]
-        yerr = yerr[sorted_indices] if yerr is not None else None
-        st.subheader("Phase-Folded Lightcurve")
-        plt.figure(figsize=(8, 4))
-        if yerr is not None:
-            plt.errorbar(
-                x=phase,
-                y=y,
-                yerr=yerr,
-                markersize=5,
-                fmt="o",
-                color="k",
-                label="Phase-Folded Lightcurve",
-            )
-            plt.errorbar(x=phase + 1, y=y, yerr=yerr, markersize=5, fmt="o", color="k")
-        else:
-            plt.plot(phase, y, "ok", markersize=5, label="Phase-Folded Lightcurve")
-            plt.plot(phase + 1, y, "ok", markersize=5)
-        plt.xlabel("Phase", fontsize=18)
-        plt.ylabel("Magnitude/Flux", fontsize=18)
-        plt.gca().invert_yaxis()
-        plt.title(f"Phase-Folded Lightcurve (Period = {period_days:.4f} days)")
-        plt.xticks(fontsize=18)
-        plt.yticks(fontsize=18)
-        st.pyplot(plt)
 
     # now plot best & manual periods
     if period_best and x is not None and y is not None:
