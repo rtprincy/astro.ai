@@ -257,14 +257,7 @@ if df is not None:
         ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='k', linewidth=2)
         ax.set_xlabel("Frequency (cycles/day)")
         ax.set_ylabel("Normalised Psi")
-        ax.plot(
-            st.session_state.best_freq,
-            1,
-            color="red",
-            fmt="o",
-            ms=4,
-            label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d",
-        )
+        ax.plot(st.session_state.best_freq, 1, "o", markersize=4, color="red",label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d")
         ax.set_title("Periodogram Analysis", fontsize=20)
         ax.legend(fontsize=20)
         # ax.grid(True, alpha=0.3)
