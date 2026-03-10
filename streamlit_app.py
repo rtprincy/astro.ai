@@ -15,51 +15,51 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 # Custom CSS for dark theme and styling
-st.markdown("""
-<style>
-    .main {
-        background-color: #0e1117;
-        color: #ffffff;
-    }
-    .sidebar .sidebar-content {
-        background-color: #1a1c23;
-        color: #ffffff;
-    }
-    .stButton>button {
-        background-color: #4CAF50;
-        color: white;
-        border-radius: 8px;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-    }
-    .stButton>button:hover {
-        background-color: #45a049;
-    }
-    .stTextInput>div>div>input {
-        background-color: #2d3748;
-        color: #ffffff;
-        border-radius: 5px;
-    }
-    .stSelectbox>div>div>select {
-        background-color: #2d3748;
-        color: #ffffff;
-        border-radius: 5px;
-    }
-    .stHeader {
-        color: #4CAF50;
-    }
-    .stSubheader {
-        color: #81c784;
-    }
-    .stWrite {
-        color: #e8f5e8;
-    }
-    .css-1d391kg {
-        background-color: #0e1117;
-    }
-</style>
-""", unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+#     .main {
+#         background-color: #0e1117;
+#         color: #ffffff;
+#     }
+#     .sidebar .sidebar-content {
+#         background-color: #1a1c23;
+#         color: #ffffff;
+#     }
+#     .stButton>button {
+#         background-color: #4CAF50;
+#         color: white;
+#         border-radius: 8px;
+#         border: none;
+#         padding: 10px 20px;
+#         font-size: 16px;
+#     }
+#     .stButton>button:hover {
+#         background-color: #45a049;
+#     }
+#     .stTextInput>div>div>input {
+#         background-color: #2d3748;
+#         color: #ffffff;
+#         border-radius: 5px;
+#     }
+#     .stSelectbox>div>div>select {
+#         background-color: #2d3748;
+#         color: #ffffff;
+#         border-radius: 5px;
+#     }
+#     .stHeader {
+#         color: #4CAF50;
+#     }
+#     .stSubheader {
+#         color: #81c784;
+#     }
+#     .stWrite {
+#         color: #e8f5e8;
+#     }
+#     .css-1d391kg {
+#         background-color: #0e1117;
+#     }
+# </style>
+# """, unsafe_allow_html=True)
 
 # Header with title and description
 st.markdown("""
