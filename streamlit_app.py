@@ -80,28 +80,23 @@ st.markdown("""
 
 
 # Configure matplotlib for dark theme
-plt.style.use('dark_background')
+plt.style.use('ggplot')
 plt.rcParams['figure.dpi']=300
-plt.rcParams['lines.color']='w'
-plt.rcParams['axes.edgecolor']='w'
-plt.rcParams['xtick.color']='w'
-plt.rcParams['ytick.color']='w'
-plt.rcParams['axes.labelcolor']='w'
-plt.rcParams['text.color']='w'
 plt.rcParams['xtick.minor.visible']=False
 plt.rcParams['ytick.minor.visible']=False
-plt.rcParams['axes.labelsize']=22
-plt.rcParams['xtick.labelsize']=20
-plt.rcParams['ytick.labelsize']=20
+plt.rcParams['axes.labelsize']=25
+plt.rcParams['xtick.labelsize']=22
+plt.rcParams['ytick.labelsize']=22
 
 
 def freq_grid(times,oversampling_factor=10,f0=None,fn=None):
     times=np.sort(times)
     df = 1.0 / (times.max() - times.min())
-    if f0 is None:
+    if (f0 is None) | (int(f0)==0):
         f0 = df
     if fn is None:
         fn = 0.5 / np.median(np.diff(times)) 
+        
     return np.arange(f0, fn, df / oversampling_factor)
 
 # use sidebar for controls; outputs on main area
@@ -224,19 +219,19 @@ if uploaded_file:
             )
         else:
             ax.plot(x, y, "o", markersize=3, color='cyan', label="Data points")
-        ax.set_xlabel("Time (MJD - %.5f)"%(min(x)), fontsize=14)
-        ax.set_ylabel("Magnitude/Flux", fontsize=14)
+        ax.set_xlabel("Time (MJD - %.5f)"%(min(x)))
+        ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title("Original Light Curve", fontsize=16, color='white')
-        ax.legend()
-        ax.grid(True, alpha=0.3)
+        ax.set_title("Original Light Curve", fontsize=20, color='white')
+        ax.legend(fontsize=20)
+        # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
 
         st.markdown("### 📊 Hybrid Psi Periodogram")
         fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='orange', linewidth=2)
-        ax.set_xlabel("Frequency (cycles/day)", fontsize=14)
-        ax.set_ylabel("Normalized Psi", fontsize=14)
+        ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='k', alpha=0.7, linewidth=2)
+        ax.set_xlabel("Frequency (cycles/day)")
+        ax.set_ylabel("Normalised Psi")
         ax.axvline(
             st.session_state.best_freq,
             color="red",
@@ -244,9 +239,9 @@ if uploaded_file:
             linewidth=2,
             label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d",
         )
-        ax.set_title("Periodogram Analysis", fontsize=16, color='white')
-        ax.legend()
-        ax.grid(True, alpha=0.3)
+        ax.set_title("Periodogram Analysis", fontsize=20, color='white')
+        ax.legend(fontsize=20)
+        # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
 
     # phase-folding uses manual period if provided, otherwise uses stored best period
@@ -303,19 +298,20 @@ if uploaded_file:
                 yerr=yerr_best,
                 markersize=3,
                 fmt="o",
-                color="lime",
-                ecolor='lightgreen',
+                color="k",
+                ecolor='k',
                 capsize=2,
+                alpha=0.7
             )
-            ax.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=3, fmt="o", color="lime", ecolor='lightgreen', capsize=2)
+            ax.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=3, fmt="o", color="k", ecolor='k', capsize=2, alpha=0.7)
         else:
-            ax.plot(phase, y_best, "o", markersize=3, color="lime")
-            ax.plot(phase + 1, y_best, "o", markersize=3, color="lime")
-        ax.set_xlabel("Phase", fontsize=14)
-        ax.set_ylabel("Magnitude/Flux", fontsize=14)
+            ax.plot(phase, y_best, "o", markersize=3, color="k", alpha=0.7)
+            ax.plot(phase + 1, y_best, "o", markersize=3, color="k", alpha=0.7)
+        ax.set_xlabel("Phase")
+        ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title(f"Phase-Folded Lightcurve (Best Period: {period_best:.4f} days)", fontsize=16, color='white')
-        ax.grid(True, alpha=0.3)
+        ax.set_title(f"Phase-Folded Lightcurve (Best Period: {period_best:.4f} days)", fontsize=20, color='white')
+        # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
 
     if period_manual and x is not None and y is not None:
@@ -334,17 +330,18 @@ if uploaded_file:
                 yerr=yerr_man,
                 markersize=3,
                 fmt="o",
-                color="magenta",
-                ecolor='violet',
+                color="k",
+                ecolor='k',
                 capsize=2,
+                alpha=0.7
             )
-            ax.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=3, fmt="o", color="magenta", ecolor='violet', capsize=2)
+            ax.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=3, fmt="o", color="k", ecolor='k', capsize=2, alpha=0.7)
         else:
-            ax.plot(phase, y_man, "o", markersize=3, color="magenta")
-            ax.plot(phase + 1, y_man, "o", markersize=3, color="magenta")
-        ax.set_xlabel("Phase", fontsize=14)
-        ax.set_ylabel("Magnitude/Flux", fontsize=14)
+            ax.plot(phase, y_man, "o", markersize=3, color="k", alpha=0.7)
+            ax.plot(phase + 1, y_man, "o", markersize=3, color="k", alpha=0.7)
+        ax.set_xlabel("Phase")
+        ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
-        ax.set_title(f"Phase-Folded Lightcurve (Manual Period: {period_manual:.4f} days)", fontsize=16, color='white')
-        ax.grid(True, alpha=0.3)
+        ax.set_title(f"Phase-Folded Lightcurve (Manual Period: {period_manual:.4f} days)", fontsize=20, color='white')
+        # ax.grid(True, alpha=0.3)
         st.pyplot(fig)
