@@ -7,9 +7,6 @@ from lk_stat_package import lk_stat
 import base64
 import streamlit as st
 
-with open("/workspaces/astro.ai/streamlit_page.png", "rb") as f:
-    data = base64.b64encode(f.read()).decode()
-
 # Page configuration
 st.set_page_config(
     page_title="Astro Time-Series Analyser",
@@ -66,7 +63,7 @@ st.markdown("""
 
 # Header with title and description
 st.markdown("""
-<meta property="og:image" content="data:image/png;base64,{data}">
+<meta property="og:image" content="https://github.com/rtprincy/astro.ai/blob/main/streamlit_page.png?raw=true">
 <meta property="og:title" content="Time-series analysis tools for astronomy">
 <meta property="og:description" content="Time-series frequency search and visualisation">
 <div style="text-align: center; padding: 20px;">
