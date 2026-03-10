@@ -229,7 +229,7 @@ if uploaded_file:
 
         st.markdown("### 📊 Hybrid Psi Periodogram")
         fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='k', alpha=0.7, linewidth=2)
+        ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='k', linewidth=2)
         ax.set_xlabel("Frequency (cycles/day)")
         ax.set_ylabel("Normalised Psi")
         ax.axvline(
@@ -300,13 +300,13 @@ if uploaded_file:
                 fmt="o",
                 color="k",
                 ecolor='k',
-                capsize=2,
-                alpha=0.7
+                capsize=2
+            
             )
-            ax.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=3, fmt="o", color="k", ecolor='k', capsize=2, alpha=0.7)
+            ax.errorbar(x=phase + 1, y=y_best, yerr=yerr_best, markersize=3, fmt="o", color="k", ecolor='k', capsize=2)
         else:
-            ax.plot(phase, y_best, "o", markersize=3, color="k", alpha=0.7)
-            ax.plot(phase + 1, y_best, "o", markersize=3, color="k", alpha=0.7)
+            ax.plot(phase, y_best, "o", markersize=3, color="k")
+            ax.plot(phase + 1, y_best, "o", markersize=3, color="k")
         ax.set_xlabel("Phase")
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
@@ -332,13 +332,12 @@ if uploaded_file:
                 fmt="o",
                 color="k",
                 ecolor='k',
-                capsize=2,
-                alpha=0.7
+                capsize=2
             )
-            ax.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=3, fmt="o", color="k", ecolor='k', capsize=2, alpha=0.7)
+            ax.errorbar(x=phase + 1, y=y_man, yerr=yerr_man, markersize=3, fmt="o", color="k", ecolor='k', capsize=2)
         else:
-            ax.plot(phase, y_man, "o", markersize=3, color="k", alpha=0.7)
-            ax.plot(phase + 1, y_man, "o", markersize=3, color="k", alpha=0.7)
+            ax.plot(phase, y_man, "o", markersize=3, color="k")
+            ax.plot(phase + 1, y_man, "o", markersize=3, color="k")
         ax.set_xlabel("Phase")
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
