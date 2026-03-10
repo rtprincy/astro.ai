@@ -121,6 +121,9 @@ with st.sidebar:
         try:
             df = pd.read_csv("demo_lc.csv")
             st.info("ℹ️ Loaded demo light curve from `demo_lc.csv`.")
+            x_column = "Time"
+            y_column = "mag"
+            yerr_column = "mag_err"
         except Exception as e:
             st.error(f"❌ Failed to load demo file: {e}")
             df = None
@@ -239,7 +242,7 @@ if df is not None:
             )
         else:
             ax.plot(x, y, "o", markersize=4, color='C0', label="Data points")
-        ax.set_xlabel("Time (MJD - %.5f)"%(min(x)))
+        ax.set_xlabel("Time - %.5f)"%(min(x)))
         ax.set_ylabel("Magnitude/Flux")
         ax.invert_yaxis()
         ax.set_title("Original time-series", fontsize=20)
@@ -252,11 +255,11 @@ if df is not None:
         ax.plot(st.session_state.frequency, st.session_state.psi_norm, color='k', linewidth=2)
         ax.set_xlabel("Frequency (cycles/day)")
         ax.set_ylabel("Normalised Psi")
-        ax.axvline(
+        ax.plot(
             st.session_state.best_freq,
+            1,
             color="red",
-            linestyle="--",
-            linewidth=2,
+            ms=3,
             label=f"Best Frequency: {st.session_state.best_freq:.4f} c/d",
         )
         ax.set_title("Periodogram Analysis", fontsize=20)
