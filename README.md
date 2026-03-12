@@ -24,5 +24,3 @@ A Streamlit app for visualizing and analysing astronomical time-series, includin
    ```
    $ streamlit run streamlit_app.py
    ```
-# Show me
-![Time-series Analysis Tool](https://github.com/rtprincy/astro.ai/blob/main/streamlit_page.png)
