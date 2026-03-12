@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.timeseries import LombScargle
 from lk_stat_package import lk_stat
-import base64
-import streamlit as st
 
 # Page configuration
 st.set_page_config(
@@ -14,52 +12,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-# Custom CSS for dark theme and styling
-# st.markdown("""
-# <style>
-#     .main {
-#         background-color: #0e1117;
-#         color: #ffffff;
-#     }
-#     .sidebar .sidebar-content {
-#         background-color: #1a1c23;
-#         color: #ffffff;
-#     }
-#     .stButton>button {
-#         background-color: #4CAF50;
-#         color: white;
-#         border-radius: 8px;
-#         border: none;
-#         padding: 10px 20px;
-#         font-size: 16px;
-#     }
-#     .stButton>button:hover {
-#         background-color: #45a049;
-#     }
-#     .stTextInput>div>div>input {
-#         background-color: #2d3748;
-#         color: #ffffff;
-#         border-radius: 5px;
-#     }
-#     .stSelectbox>div>div>select {
-#         background-color: #2d3748;
-#         color: #ffffff;
-#         border-radius: 5px;
-#     }
-#     .stHeader {
-#         color: #4CAF50;
-#     }
-#     .stSubheader {
-#         color: #81c784;
-#     }
-#     .stWrite {
-#         color: #e8f5e8;
-#     }
-#     .css-1d391kg {
-#         background-color: #0e1117;
-#     }
-# </style>
-# """, unsafe_allow_html=True)
 
 # Header with title and description
 st.markdown("""
@@ -79,7 +31,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Configure matplotlib for dark theme
+# Configure matplotlib for better aesthetics in Streamlit
 plt.style.use('default')
 plt.rcParams['figure.dpi']=300
 plt.rcParams['xtick.minor.visible']=False
