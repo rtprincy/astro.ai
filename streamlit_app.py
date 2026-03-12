@@ -22,7 +22,7 @@ st.markdown("""
         Upload your CSV data and discover periodic signals in your observations.
     </p>
 </div>
-""", unsafe_allow_html=True)
+""")
 
 
 # Configure matplotlib for better aesthetics in Streamlit
