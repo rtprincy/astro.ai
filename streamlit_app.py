@@ -63,11 +63,11 @@ st.set_page_config(
 
 # Header with title and description
 st.markdown("""
-<meta property="og:image" content="https://github.com/rtprincy/astro.ai/blob/main/streamlit_page.png?raw=true">
+<meta property="og:image" content="https://github.com/rtprincy/astro.ai/blob/main/streamlit_page.png">
 <meta property="og:title" content="Time-series analysis tools for astronomy">
 <meta property="og:description" content="Time-series frequency search and visualisation">
 <div style="text-align: center; padding: 20px;">
-    <img src="https://github.com/rtprincy/rtprincy.github.io/blob/main/assets/background_astroml.png?raw=true" 
+    <img src="https://github.com/rtprincy/rtprincy.github.io/blob/main/assets/background_astroml.png" 
          style="width: 100%; max-width: 800px; border-radius: 10px; margin-bottom: 20px;" 
          alt="Time-Series Analysis">
     <h1 style="color: #4CAF50;">🌌 Time-Series Analysis Tools</h1>
